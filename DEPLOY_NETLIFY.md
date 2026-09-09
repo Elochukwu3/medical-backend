@@ -1,58 +1,78 @@
-# Hosting on Netlify + Free Backend
+# Hosting on Netlify + Render Backend (Defense-Ready)
 
-This project has two parts:
+This project is configured with:
 1. **Frontend (`frontend/`)**: Hosted for free on **Netlify**.
-2. **Backend (`backend/`)**: Hosted for free on **Render** (or **PythonAnywhere**).
+2. **Backend (`backend/`)**: Live on **Render** at `https://medical-backend-6mi7.onrender.com`.
 
 ---
 
-## Step 1: Deploy Frontend on Netlify (Takes 1 Minute)
+## 🛡️ Critical: Preventing Render Free Tier "Sleep" on Defense Day
 
-### Option A: Drag & Drop (Fastest — No Git required)
+### Why does Render go off?
+On the **Render Free Tier**, web services automatically **spin down into sleep mode after 15 minutes of inactivity**. When a new visitor opens the site, Render takes **30 to 50 seconds ("cold start")** to wake up.
+
+To avoid delays or awkward waiting in front of project supervisors and examiners, use one of the guaranteed solutions below:
+
+---
+
+### Solution 1: Free 24/7 Automated Pinger via UptimeRobot (100% Free & Recommended)
+This pings your Render backend every 5 minutes so it **never goes to sleep**.
+
+1. Go to [https://uptimerobot.com](https://uptimerobot.com) and create a free account.
+2. Click **+ Add New Monitor**.
+3. Fill in the details:
+   - **Monitor Type**: `HTTP(s)`
+   - **Friendly Name**: `MedLab Render Keep-Alive`
+   - **URL (or IP)**: `https://medical-backend-6mi7.onrender.com/health/`
+   - **Monitoring Interval**: `Every 5 minutes`
+4. Click **Create Monitor**.
+5. **Result**: UptimeRobot will ping your server automatically every 5 minutes 24/7, keeping your backend hot, fast, and 100% awake!
+
+---
+
+### Solution 2: Automated GitHub Actions Keep-Alive (Built-in)
+A GitHub Actions workflow is already configured at `.github/workflows/keep_alive.yml`.
+When you push this repository to GitHub, GitHub Actions will automatically ping your Render backend every 10 minutes on a cron schedule.
+
+---
+
+### Solution 3: Defense Day Protocol (15 Minutes Before Presentation)
+1. **15 minutes before your turn:** Open your phone or laptop browser and visit:
+   `https://medical-backend-6mi7.onrender.com/health/`
+2. This warms up the Render container so it responds in **sub-second speed** during your presentation.
+
+---
+
+### Solution 4: Emergency Offline Fallback (Bulletproof Plan B)
+If the defense hall has terrible Wi-Fi or Render experiences cloud downtime:
+1. Open terminal on your presentation laptop:
+   ```bash
+   cd backend
+   .venv\Scripts\activate
+   python manage.py runserver
+   ```
+2. On the frontend login screen, click the **`💻 Local Django`** button (or set backend to `http://127.0.0.1:8000`).
+3. Sign in immediately with `labadmin` / `demo123`.
+
+---
+
+## Deploying Frontend on Netlify
+
+### Option A: Drag & Drop
 1. Go to [https://app.netlify.com/drop](https://app.netlify.com/drop) and log in.
 2. Drag and drop the `frontend` folder (`c:\Users\kings\Desktop\degree-project\medical\frontend`) directly into the Netlify Drop zone.
-3. Netlify will instantly give you a live URL (e.g. `https://your-site-name.netlify.app`).
+3. Netlify will give you a live URL (e.g. `https://your-medlab.netlify.app`).
 
 ### Option B: Via GitHub
-1. Push your repository to GitHub.
+1. Push your repo to GitHub.
 2. In Netlify, click **Add new site** > **Import an existing project** > **GitHub**.
-3. Select this repo.
-4. Set:
+3. Select this repo and set:
    - **Publish directory**: `frontend`
-5. Click **Deploy site**.
+4. Click **Deploy site**.
 
 ---
 
-## Step 2: Deploy Backend for Free on Render.com (Takes 3 Minutes)
-
-Since Netlify only hosts static frontend files, your Django API runs on Render for free:
-
-1. Push your project to GitHub.
-2. Go to [https://render.com](https://render.com) and sign in.
-3. Click **New +** -> **Web Service**.
-4. Connect your GitHub repository.
-5. Configure the following fields:
-   - **Name**: `medlab-backend`
-   - **Root Directory**: `backend`
-   - **Environment**: `Python 3`
-   - **Build Command**: 
-     ```bash
-     pip install -r requirements.txt && python manage.py migrate && python manage.py seed_demo
-     ```
-   - **Start Command**: 
-     ```bash
-     gunicorn config.wsgi:application
-     ```
-6. Click **Create Web Service**.
-7. Render will provide your public backend URL, for example: `https://medlab-backend.onrender.com`.
-
----
-
-## Step 3: Connect Frontend to Backend
-
-1. Open your Netlify site (`https://your-site-name.netlify.app`).
-2. On the sign-in screen, enter:
-   - **Username**: `labadmin`
-   - **Password**: `demo123`
-   - **Backend API URL**: Paste your Render URL (e.g. `https://medlab-backend.onrender.com`).
-3. Click **Sign in**. The URL will be saved automatically for future visits!
+## Login Credentials
+- **Backend API URL**: `https://medical-backend-6mi7.onrender.com` (configured by default)
+- **Username**: `labadmin`
+- **Password**: `demo123`

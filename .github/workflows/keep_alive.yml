@@ -1,0 +1,17 @@
+name: Render Backend Keep-Alive
+
+on:
+  schedule:
+    # Runs every 10 minutes (cron: '*/10 * * * *')
+    - cron: '*/10 * * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub Actions tab
+
+jobs:
+  ping-render:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Render Backend
+        run: |
+          echo "Pinging MedLab Render Backend to prevent free tier sleep..."
+          curl -s -o /dev/null -w "%{http_code}" https://medical-backend-6mi7.onrender.com/health/ || true
+          echo "Ping completed successfully."
