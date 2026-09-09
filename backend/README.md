@@ -18,6 +18,6 @@ Django REST Framework backend for the Medical Automated Data Analysis System.
    python manage.py runserver
 
 API base: /api/
-Admin: /admin/
+Admin: /admin
 
 This backend is an academic project. It uses rule-based reference-range flagging and is not a medical diagnostic system.
